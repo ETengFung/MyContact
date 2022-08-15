@@ -1,6 +1,9 @@
 package com.example.mycontact
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
@@ -10,6 +13,10 @@ import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.mycontact.databinding.FragmentSecondBinding
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.OutputStream
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -48,6 +55,7 @@ class SecondFragment : Fragment(), MenuProvider {
                 )
             }
         }
+        readProfilePicture()
         return binding.root
 
     }
@@ -59,6 +67,7 @@ class SecondFragment : Fragment(), MenuProvider {
         binding.imageViewPicture.setOnClickListener{
             getProfilePic.launch("image/*")
         }
+
 
 
     }
@@ -94,9 +103,41 @@ class SecondFragment : Fragment(), MenuProvider {
                     this!!.putString(getString(R.string.phone),phone)
                     apply()
                 }
+
+                saveProfilePicture()
             }
         }
 
         return true
     }
+    private fun saveProfilePicture() {
+        val filename = "profile.png"
+        val file = File(this.context?.filesDir, filename)
+
+        val bd = binding.imageViewPicture.drawable as BitmapDrawable
+        val bitmap = bd.bitmap
+        val outputStream: OutputStream
+
+        try{
+            outputStream = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 50, outputStream)
+            outputStream.flush()
+            outputStream.close()
+        }catch (e: FileNotFoundException){
+            e.printStackTrace()
+        }
+    }
+
+    private fun readProfilePicture(){
+        val filename = "profile.png"
+        val file = File(this.context?.filesDir, filename)
+
+        try{
+            val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+            binding.imageViewPicture.setImageBitmap(bitmap)
+        }catch (e: FileNotFoundException){
+            e.printStackTrace()
+        }
+    }
+
 }
