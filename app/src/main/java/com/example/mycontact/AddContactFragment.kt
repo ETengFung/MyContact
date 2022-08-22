@@ -2,6 +2,7 @@ package com.example.mycontact
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -38,11 +39,18 @@ class AddContactFragment : Fragment(), MenuProvider {
     override fun onPrepareMenu(menu: Menu) {
         super.onPrepareMenu(menu)
         menu.findItem(R.id.action_add).isVisible = false
+        menu.findItem(R.id.action_profile).isVisible = false
+        menu.findItem(R.id.action_settings).isVisible = false
     }
 
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-        TODO("Not yet implemented")
+        when(menuItem.itemId){
+            R.id.action_save->{
+                Toast.makeText(context,"Profile Save",Toast.LENGTH_SHORT).show()
+                true
+            }
+        }
     }
 
 }
