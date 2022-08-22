@@ -63,6 +63,11 @@ class FirstFragment : Fragment(), MenuProvider {
                 navController?.navigate(R.id.action_contact_to_profile)
                 true
             }
+            R.id.action_add->{
+                val navController = activity?.findNavController(R.id.nav_host_fragment_content_main)
+                navController?.navigate(R.id.action_contact_to_add)
+                true
+            }
         }
         return true
     }

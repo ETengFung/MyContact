@@ -15,6 +15,10 @@
             android:id="@+id/action_contact_to_profile"
             app:destination="@id/ProfileFragement"
             app:popUpTo="@id/ContactFragment" />
+        <action
+            android:id="@+id/action_contact_to_add"
+            app:destination="@id/addContactFragment"
+            app:popUpTo="@id/ContactFragment" />
     </fragment>
     <fragment
         android:id="@+id/ProfileFragement"
@@ -27,4 +31,9 @@
             app:destination="@id/ContactFragment"
             app:popUpTo="@id/ProfileFragement" />
     </fragment>
+    <fragment
+        android:id="@+id/addContactFragment"
+        android:name="com.example.mycontact.AddContactFragment"
+        android:label="@string/add"
+        tools:layout="@layout/fragment_add_contact2" />
 </navigation>
