@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.mycontact.databinding.FragmentSecondBinding
 import java.io.File
@@ -105,6 +106,10 @@ class SecondFragment : Fragment(), MenuProvider {
                 }
 
                 saveProfilePicture()
+            }
+            android.R.id.home ->{
+                val navController = activity?.findNavController(R.id.nav_host_fragment_content_main)
+                navController?.navigateUp()
             }
         }
 

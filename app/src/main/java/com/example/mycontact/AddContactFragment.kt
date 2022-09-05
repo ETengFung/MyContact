@@ -7,8 +7,9 @@ import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.findNavController
 import com.example.mycontact.databinding.FragmentAddContact2Binding
-import com.example.mycontact.databinding.FragmentFirstBinding
+import com.example.mycontact.entity.Contact
 
 class AddContactFragment : Fragment(), MenuProvider {
 
@@ -29,7 +30,7 @@ class AddContactFragment : Fragment(), MenuProvider {
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
         _binding = FragmentAddContact2Binding.inflate(inflater, container, false)
-        return inflater.inflate(R.layout.fragment_add_contact2, container, false)
+        return binding.root
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -47,10 +48,24 @@ class AddContactFragment : Fragment(), MenuProvider {
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when(menuItem.itemId){
             R.id.action_save->{
+                val name = binding.editTextTextPersonName.text.toString()
+                val phone = binding.editTextPhone2.text.toString()
+                val newContact = Contact(name,phone)
+
+                MainActivity.contactList.add(newContact)
+
                 Toast.makeText(context,"Profile Save",Toast.LENGTH_SHORT).show()
+
+                val navController = activity?.findNavController(R.id.nav_host_fragment_content_main)
+                navController?.navigateUp()
                 true
             }
+            android.R.id.home ->{
+                val navController = activity?.findNavController(R.id.nav_host_fragment_content_main)
+                navController?.navigateUp()
+            }
         }
+        return true
     }
 
 }

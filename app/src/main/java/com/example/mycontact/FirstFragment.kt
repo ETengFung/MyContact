@@ -1,6 +1,7 @@
 package com.example.mycontact
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
@@ -8,6 +9,7 @@ import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mycontact.databinding.FragmentFirstBinding
 
 /**
@@ -29,11 +31,25 @@ class FirstFragment : Fragment(), MenuProvider {
         // setHasOptionsMenu(true)
 
         //latest
+        Log.d("OnCreateView","FirstFragment")
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner,Lifecycle.State.RESUMED)
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
 
+    }
+
+    override fun onStart() {
+        Log.d("onStart","FirstFragment")
+        super.onStart()
+    }
+
+    override fun onResume() {
+        Log.d("onResume","FirstFragment")
+        val contactAdapter = ContactAdapter(MainActivity.contactList)
+        binding.rvContact.layoutManager = LinearLayoutManager(activity?.applicationContext)
+        binding.rvContact.adapter = contactAdapter
+        super.onResume()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -68,6 +84,7 @@ class FirstFragment : Fragment(), MenuProvider {
                 navController?.navigate(R.id.action_contact_to_add)
                 true
             }
+
         }
         return true
     }
@@ -78,8 +95,11 @@ class FirstFragment : Fragment(), MenuProvider {
     }
 
     override fun onDestroyView() {
+        Log.d("onDestroy","FirstFragment")
         super.onDestroyView()
         _binding = null
     }
+
+
 
 }
