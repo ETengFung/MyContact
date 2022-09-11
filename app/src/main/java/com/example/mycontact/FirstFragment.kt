@@ -3,9 +3,11 @@ package com.example.mycontact
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -22,11 +24,12 @@ class FirstFragment : Fragment(), MenuProvider {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private val contactViewModel:ContactViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         //Enable menu item
         // setHasOptionsMenu(true)
 
@@ -46,7 +49,15 @@ class FirstFragment : Fragment(), MenuProvider {
 
     override fun onResume() {
         Log.d("onResume","FirstFragment")
-        val contactAdapter = ContactAdapter(MainActivity.contactList)
+
+        val contactAdapter = ContactAdapter()
+        contactViewModel.contactList.observe(viewLifecycleOwner){
+            if(it.isEmpty()){
+                Toast.makeText(context,getString(R.string.no_record),Toast.LENGTH_SHORT).show()
+            }else{
+                contactAdapter.setContact(it)
+            }
+        }
         binding.rvContact.layoutManager = LinearLayoutManager(activity?.applicationContext)
         binding.rvContact.adapter = contactAdapter
         super.onResume()

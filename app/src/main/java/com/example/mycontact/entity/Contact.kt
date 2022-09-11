@@ -1,4 +1,9 @@
 package com.example.mycontact.entity
 
-class Contact(val name:String, val phone:String ) {
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
+class Contact(val name:String,
+              @PrimaryKey val phone:String ) {
 }
